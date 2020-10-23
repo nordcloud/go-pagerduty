@@ -10,11 +10,12 @@ integration:
 
 # tools fetches necessary dev requirements
 tools:
-	go get -u github.com/robertkrimen/godocdown/godocdown
-	go get -u github.com/kardianos/govendor
-	go get -u honnef.co/go/tools/cmd/staticcheck
-	go get -u github.com/client9/misspell/cmd/misspell
 	go get -u golang.org/x/lint/golint
+	go get -u github.com/client9/misspell/cmd/misspell
+	go get -u github.com/google/go-querystring/query
+	go get -u github.com/kardianos/govendor
+	go get -u github.com/robertkrimen/godocdown/godocdown
+	go get -u honnef.co/go/tools/cmd/staticcheck
 
 vendor-status:
 	@govendor status
