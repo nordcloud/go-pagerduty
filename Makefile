@@ -29,12 +29,17 @@ lint:
 
 # check combines all checks into a single command
 check: fmtcheck vet misspell staticcheck lint vendor-status
+ci-check: fmtcheck vet misspell staticcheck lint
 
 # fmt formats Go code.
 fmt:
 	gofmt -w $(GOFMT_FILES)
 
 test: check
+	@echo "==> Checking that code complies with unit tests..."
+	@go test ./pagerduty/ -cover
+
+ci-test: ci-check
 	@echo "==> Checking that code complies with unit tests..."
 	@go test ./pagerduty/ -cover
 
