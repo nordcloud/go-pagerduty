@@ -47,7 +47,7 @@ webdoc:
 
 fmtcheck:
 	@echo -n "==> Checking that code complies with gofmt requirements..."
-	@gofmt_files=$$(gofmt -l $(GOFMT_FILES)) ; if [[ -n "$$gofmt_files" ]]; then \
+	@gofmt_files=$$(gofmt -l ./pagerduty/) ; if [[ -n "$$gofmt_files" ]]; then \
 		echo 'gofmt needs running on the following files:'; \
 		echo "$$gofmt_files"; \
 		echo "You can use the command: \`make fmt\` to reformat code."; \
@@ -62,12 +62,12 @@ misspell:
 
 staticcheck:
 	@echo -n "==> Checking that code complies with staticcheck requirements..."
-	@staticcheck $(GOLIST)
+	@staticcheck ./pagerduty/
 	@echo -e "$(OK_MSG)"
 
 vet:
 	@echo -n "==> Checking that code complies with go vet requirements..."
-	@go vet $(GOLIST) ; if [ $$? -eq 1 ]; then \
+	@go vet ./pagerduty/ ; if [ $$? -eq 1 ]; then \
 		echo ""; \
 		echo "Vet found suspicious constructs. Please check the reported constructs"; \
 		echo "and fix them if necessary before submitting the code for review."; \
