@@ -24,7 +24,7 @@ coverprofile:
 
 lint:
 	@echo -n "==> Checking that code complies with golint requirements..."
-	golint ./pagerduty/ | tee /dev/stderr
+	@golint ./pagerduty/
 	@echo -e "$(OK_MSG)"
 
 # check combines all checks into a single command
@@ -36,7 +36,7 @@ fmt:
 
 test: check
 	@echo "==> Checking that code complies with unit tests..."
-	@go test ./ppgerduty/ -cover
+	@go test ./pagerduty/ -cover
 
 webdoc:
 	@echo "==> Starting webserver at http://localhost:6060"
