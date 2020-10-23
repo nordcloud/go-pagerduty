@@ -1,7 +1,6 @@
 SHELL=bash
 OK_MSG = \x1b[32m ✔\x1b[0m
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
-GOLIST?=$$(go list ./... | grep -v vendor)
 
 default: test
 
@@ -25,9 +24,7 @@ coverprofile:
 
 lint:
 	@echo -n "==> Checking that code complies with golint requirements..."
-	@ret=0 && for pkg in $(GOLIST); do \
-		test -z "$$(golint $$pkg | tee /dev/stderr)" || ret=1; \
-		done ; exit $$ret
+	golint ./pagerduty/ | tee /dev/stderr
 	@echo -e "$(OK_MSG)"
 
 # check combines all checks into a single command
@@ -39,7 +36,7 @@ fmt:
 
 test: check
 	@echo "==> Checking that code complies with unit tests..."
-	@go test $(GOLIST) -cover
+	@go test ./ppgerduty/ -cover
 
 webdoc:
 	@echo "==> Starting webserver at http://localhost:6060"
