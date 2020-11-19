@@ -1,7 +1,0 @@
-version: "1"
-rules:
-  - base: master
-    upstream: heimweh:go-pagerduty
-    mergeMethod: rebase
-    conflictReviewers:
-      - mLupine
