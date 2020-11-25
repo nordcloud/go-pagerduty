@@ -45,19 +45,38 @@ func (s *BusinessServiceService) List() (*ListBusinessServicesResponse, *Respons
 	u := "/business_services"
 	v := new(ListBusinessServicesResponse)
 
-	resp, err := s.client.newRequestDo("GET", u, nil, nil, &v)
+	bs := make([]*BusinessService, 0)
+
+	responseHandler := func(response *Response) (ListResp, *Response, error) {
+		var result ListBusinessServicesResponse
+
+		if err := s.client.DecodeJSON(response, &result); err != nil {
+			return ListResp{}, response, err
+		}
+
+		bs = append(bs, result.BusinessServices...)
+
+		return ListResp{
+			More:   result.More,
+			Offset: result.Offset,
+			Limit:  result.Limit,
+		}, response, nil
+	}
+
+	err := s.client.newRequestPagedGetDo(u, responseHandler)
 	if err != nil {
 		return nil, nil, err
 	}
+	v.BusinessServices = bs
 
-	return v, resp, nil
+	return v, nil, nil
 }
 
 // Create creates a new business service.
-func (s *BusinessServiceService) Create(ruleset *BusinessService) (*BusinessService, *Response, error) {
+func (s *BusinessServiceService) Create(bs *BusinessService) (*BusinessService, *Response, error) {
 	u := "/business_services"
 	v := new(BusinessServicePayload)
-	p := &BusinessServicePayload{BusinessService: ruleset}
+	p := &BusinessServicePayload{BusinessService: bs}
 
 	resp, err := s.client.newRequestDo("POST", u, nil, p, v)
 	if err != nil {
@@ -88,10 +107,10 @@ func (s *BusinessServiceService) Delete(ID string) (*Response, error) {
 }
 
 // Update updates a business service.
-func (s *BusinessServiceService) Update(ID string, ruleset *BusinessService) (*BusinessService, *Response, error) {
+func (s *BusinessServiceService) Update(ID string, bs *BusinessService) (*BusinessService, *Response, error) {
 	u := fmt.Sprintf("/business_services/%s", ID)
 	v := new(BusinessServicePayload)
-	p := BusinessServicePayload{BusinessService: ruleset}
+	p := BusinessServicePayload{BusinessService: bs}
 
 	resp, err := s.client.newRequestDo("PUT", u, nil, p, v)
 	if err != nil {
