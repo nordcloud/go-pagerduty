@@ -250,7 +250,7 @@ func (c *Client) doRetry(req *http.Request, v interface{}, try int) (*Response, 
 
 	if v != nil {
 		if err := c.DecodeJSON(response, v); err != nil {
-			c.FileLogger.Fatalln(fmt.Sprintf("[ERROR] API Error [4] (try %d): %#v\n\n%#v\n\n%#v\n", try, err, resp))
+			c.FileLogger.Fatalln(fmt.Sprintf("[ERROR] API Error [4] (try %d): %#v\n\n%#v\n", try, err, resp))
 
 			if try <= 3 && resp.StatusCode == 429 {
 				time.Sleep(20 * time.Second)

@@ -29,20 +29,6 @@ func TestAbilitiesList(t *testing.T) {
 	}
 }
 
-func TestAbilitiesListFailure(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/abilities", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusForbidden)
-	})
-
-	if _, _, err := client.Abilities.List(); err == nil {
-		t.Fatal("expected error; got nil")
-	}
-}
-
 func TestAbilitiesTestAbility(t *testing.T) {
 	setup()
 	defer teardown()
@@ -54,19 +40,5 @@ func TestAbilitiesTestAbility(t *testing.T) {
 
 	if _, err := client.Abilities.Test("sso"); err != nil {
 		t.Fatal(err)
-	}
-}
-
-func TestAbilitiesTestAbilityFailure(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/abilities/sso", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusForbidden)
-	})
-
-	if _, err := client.Abilities.Test("sso"); err == nil {
-		t.Fatal("expected error; got nil")
 	}
 }
